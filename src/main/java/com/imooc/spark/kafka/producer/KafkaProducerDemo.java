@@ -33,9 +33,9 @@ public class KafkaProducerDemo extends Thread {
         // 发送缓存区内存大小
         props.put("buffer.memory", 33554432);
         // key序列化
-        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        props.put("key.serializer", KafkaProperties.KEY_SERIALIZER);
         // value序列化
-        props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        props.put("value.serializer", KafkaProperties.VALUE_SERIALIZER);
         kafkaProducer = new KafkaProducer<>(props);
     }
 
@@ -44,7 +44,7 @@ public class KafkaProducerDemo extends Thread {
         int messageNo=1;
         while (true){
             String message = "message_"+messageNo;
-            ProducerRecord<String,String> record = new ProducerRecord<>(topic, "tianyafu", message);
+            ProducerRecord<String,String> record = new ProducerRecord<>(topic, null, message);
             kafkaProducer.send(record, new Callback() {
                 @Override
                 public void onCompletion(RecordMetadata metadata, Exception exception) {
